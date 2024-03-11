@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 
+#RunApp: uvicorn sql_app.main:app --reload
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
