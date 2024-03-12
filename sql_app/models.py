@@ -24,3 +24,11 @@ class HomeWork(Base):
     owner_id = Column(Integer, ForeignKey('users.id'))
 
     owner = relationship('User', back_populates='home_works')
+    
+class Products(Base):
+    __tablename__ = 'products'
+    id = Column(Integer, primary_key=True, index=True)
+    产品名称 = Column(String)
+    产品编号 = Column(String, index=True)
+    老编码 = Column(String)
+    

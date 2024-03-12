@@ -1,0 +1,11 @@
+fastapi
+pycparser
+pydantic
+pydantic-core
+starlette
+types-pyopenssl
+typing-extensions
+uvicorn
+sqlalchemy
+bcrypt
+typing

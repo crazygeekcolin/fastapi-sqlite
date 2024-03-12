@@ -31,7 +31,7 @@ def get_home_works(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_id: int):
-    db_home_work = models.HomeWork(**home_work.dict(), owner_id=user_id)
+    db_home_work = models.HomeWork(**home_work.model_dump(), owner_id=user_id)
     db.add(db_home_work)
     db.commit()
     db.refresh(db_home_work)
