@@ -11,6 +11,8 @@ class HomeWorkCreate(HomeWorkBase):
 
 
 class HomeWork(HomeWorkBase):
+    #model_config = ConfigDict(from_attributes=True)
+    #https://docs.pydantic.dev/latest/concepts/models/
     id: int
     owner_id: int
 
@@ -27,6 +29,8 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
+    #model_config = ConfigDict(from_attributes=True)
+    
     id: int
     is_active: bool
     home_works: List[HomeWork] = []
