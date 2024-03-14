@@ -50,7 +50,22 @@ print(co_orm)
 co_model = CompanyModel.model_validate(co_orm)
 print(co_model)
 
-import bcrypt
+from typing import List
 
-a = bcrypt.hashpw('whathappen213456', bcrypt.gensalt())
-print(a)
+from pydantic import BaseModel, ValidationError
+
+
+class Model(BaseModel):
+    list_of_ints: List[int]
+    a_float: float
+
+
+data = dict(
+    list_of_ints=['1', 2, 'bad'],
+    a_float='not a float',
+)
+
+try:
+    Model(**data)
+except ValidationError as e:
+    print(e)
