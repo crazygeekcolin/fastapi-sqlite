@@ -1,5 +1,15 @@
-from pydantic import BaseModel
+from typing import List
 
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.orm import declarative_base
+from typing_extensions import Annotated
+
+from pydantic import BaseModel, ConfigDict, StringConstraints
+
+from datetime import datetime
+
+print(datetime.now())
 
 class User(BaseModel):
     id: int
@@ -10,14 +20,6 @@ assert user.id == 123
 assert isinstance(user.id, int)
 
 
-from typing import List
-
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.dialects.postgresql import ARRAY
-from sqlalchemy.orm import declarative_base
-from typing_extensions import Annotated
-
-from pydantic import BaseModel, ConfigDict, StringConstraints
 
 Base = declarative_base()
 
@@ -69,3 +71,4 @@ try:
     Model(**data)
 except ValidationError as e:
     print(e)
+    
