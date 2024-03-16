@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -34,10 +34,23 @@ class Products(Base):
     产品类别 = Column(String, ForeignKey('products_class.产品类别1'))
     
     产品类别_子表 = relationship('Products_class', back_populates= '产品类别_母表')
+    
+    产品编号_母表 = relationship('productsCost', back_populates='产品编号_子表')
 
 class Products_class(Base):
         __tablename__ = 'products_class'
         id = Column(Integer, primary_key=True, index=True)
         产品类别1 = Column(String, index=True)
-        
         产品类别_母表 = relationship('Products', back_populates= '产品类别_子表')
+
+class ProductsCost(Base):
+    __tablename__ = 'productsCost'
+    id = Column(Integer, primary_key=True, index=True)
+    产品名称 = Column(String)
+    产品规格 = Column(String)
+    成本 = Column(Integer)
+    update = Column(DateTime)
+    产品编号 = Column(String, ForeignKey('products.产品编号'))
+    产品编号_子表 = relationship('products', back_populates='产品编号_母表')
+
+    

@@ -1,5 +1,6 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+from datetime import datetime
 
 
 class HomeWorkBase(BaseModel):
@@ -11,13 +12,13 @@ class HomeWorkCreate(HomeWorkBase):
 
 
 class HomeWork(HomeWorkBase):
-    #model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
     #https://docs.pydantic.dev/latest/concepts/models/
     id: int
     owner_id: int
 
-    class Config:
-        orm_mode = True
+    """  class Config:
+        orm_mode = True """
 
 
 class UserBase(BaseModel):
@@ -29,12 +30,12 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    #model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
     
     id: int
     is_active: bool
     home_works: List[HomeWork] = []
 
-    class Config:
-        orm_mode = True
+    """  class Config:
+        orm_mode = True """
 

@@ -8,6 +8,7 @@ from .database import SessionLocal, engine
 
 #RunApp: uvicorn sql_app.main:app --reload
 
+#This sentence is removeable, the purpose is to create a SQLite from scratch
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -29,6 +30,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="Name already registered.")
 
+    print(schemas.User)
     return crud.create_user(db=db, user=user)
 
 
@@ -51,6 +53,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post('/users/{user_id}/home-works/', response_model=schemas.HomeWork)
 def create_home_work_for_user(user_id: int, home_work: schemas.HomeWorkCreate, db: Session = Depends(get_db)):
+    print(schemas.HomeWork)
     return crud.create_user_home_work(db=db, home_work=home_work, user_id=user_id)
 
 
@@ -59,3 +62,4 @@ def read_home_works(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     home_works = crud.get_home_works(db, skip=skip, limit=limit)
 
     return home_works
+

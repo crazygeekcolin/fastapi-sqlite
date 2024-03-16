@@ -8,8 +8,17 @@ from typing_extensions import Annotated
 from pydantic import BaseModel, ConfigDict, StringConstraints
 
 from datetime import datetime
+import time
 
-print(datetime.now())
+
+a = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+time.sleep(1)
+b= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+print(a,b)
+
+
+print(b>a)
+
 
 class User(BaseModel):
     id: int
@@ -72,3 +81,28 @@ try:
 except ValidationError as e:
     print(e)
     
+print(datetime(2013,2,25))
+
+
+#Default value in pydantic
+from datetime import datetime, timezone
+from uuid import UUID, uuid4
+
+from pydantic import BaseModel, Field
+
+
+def datetime_now() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+class Model(BaseModel):
+    uid: UUID = Field(default_factory=uuid4)
+    updated: datetime = Field(default_factory=datetime_now)
+
+
+m1 = Model()
+m2 = Model()
+assert m1.uid != m2.uid
+
+
+print('ok',m1.uid ,m2.uid, type(m1.updated))
