@@ -62,8 +62,10 @@ class User(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
+    type = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    
 
     salesperson_parent = relationship('Customer', back_populates='salesperson_child')
    # 业务员_order_parent:relationship('Curr')

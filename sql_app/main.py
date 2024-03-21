@@ -63,3 +63,7 @@ def read_home_works(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 
     return home_works
 
+@app.post('/product_class/', response_model=schemas.ProductCategory)
+def new_product_category(product_class:schemas.ProductCategoryCreate, db: Session = Depends(get_db)):
+    print(schemas.ProductCategory)
+    return crud.create_product_category(input_items = product_class, db = db)

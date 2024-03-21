@@ -32,8 +32,18 @@ def get_home_works(db: Session, skip: int = 0, limit: int = 100):
 
 def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_id: int):
     db_home_work = models.HomeWork(**home_work.model_dump(), owner_id=user_id)
+    print(home_work)
     db.add(db_home_work)
     db.commit()
     db.refresh(db_home_work)
 
     return db_home_work
+
+def create_product_category(db:Session, input_items:schemas.ProductCategoryCreate) -> models.Products_class:
+
+    db_product_category = models.Products_class(产品类别1 = input_items.productCategory)
+    db.add(db_product_category)
+    db.commit()
+    db.refresh(db_product_category)
+    
+    return db_product_category

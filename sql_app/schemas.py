@@ -38,10 +38,13 @@ class User(UserBase):
 
     """  class Config:
         orm_mode = True """
-
-""" class ProductCategory(BaseModel):
-    model_config = ConfigDict(from_attributes= True)
-    
+        
+        
+class ProductCategoryCreate(BaseModel):
     productCategory: str
-    id: Optional(int)
-     """
+
+class ProductCategory(ProductCategoryCreate):
+    model_config = ConfigDict(from_attributes= True)
+
+    id:int
+
