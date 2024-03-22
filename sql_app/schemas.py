@@ -41,10 +41,15 @@ class User(UserBase):
         
         
 class ProductCategoryCreate(BaseModel):
-    productCategory: str
+    productCategory: str | None = None
 
 class ProductCategory(ProductCategoryCreate):
     model_config = ConfigDict(from_attributes= True)
 
-    id:int
+    id: int
 
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None

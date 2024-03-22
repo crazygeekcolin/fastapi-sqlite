@@ -52,7 +52,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @app.post('/users/{user_id}/home-works/', response_model=schemas.HomeWork)
-def create_home_work_for_user(user_id: int, home_work: schemas.HomeWorkCreate, db: Session = Depends(get_db)):
+def create_home_work_for_user(user_id: int, home_work: schemas.HomeWorkCreate, db: Session = Depends(get_db)) -> models.HomeWork:
     print(schemas.HomeWork)
     return crud.create_user_home_work(db=db, home_work=home_work, user_id=user_id)
 
@@ -64,6 +64,32 @@ def read_home_works(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     return home_works
 
 @app.post('/product_class/', response_model=schemas.ProductCategory)
-def new_product_category(product_class:schemas.ProductCategoryCreate, db: Session = Depends(get_db)):
-    print(schemas.ProductCategory)
+def new_product_category(product_class:schemas.ProductCategoryCreate, db: Session = Depends(get_db)) -> models.Products_class:
+    print(schemas.ProductCategoryCreate)
     return crud.create_product_category(input_items = product_class, db = db)
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: str, q: str | None = None, short: bool = False):
+    item = {"item_id": item_id}
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a long description"}
+        )
+    return item
+
+@app.post('/items/')
+def creat_item(item:schemas.Item):
+    item_dic = item.model_dump()
+    if item.tax:
+        price_with_tax = item.price + item.tax
+        item_dic.update({'price with tax' : price_with_tax}) 
+    print(item.tax)
+    
+    return(item_dic)
+
+@app.post('/items/{item_id}/')
+def add_itemID(item_id: int , items: schemas.Item):
+    return {'item_id':item_id, **items.model_dump()}
