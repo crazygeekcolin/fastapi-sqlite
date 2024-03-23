@@ -41,7 +41,8 @@ class User(UserBase):
         
         
 class ProductCategoryCreate(BaseModel):
-    productCategory: str | None = None
+    产品类别1: str | None = None
+    #productCategory: str | None = None
 
 class ProductCategory(ProductCategoryCreate):
     model_config = ConfigDict(from_attributes= True)
@@ -53,3 +54,16 @@ class Item(BaseModel):
     description: str | None = None
     price: float
     tax: float | None = None
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "price": 35.4,
+                    "tax": 3.2,
+                    "description": "A very nice Item",
+                    "name": "Foo"
+                }
+            ]
+        }
+    }

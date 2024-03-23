@@ -41,8 +41,8 @@ def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_i
 
 def create_product_category(db:Session, input_items:schemas.ProductCategoryCreate) :
 
-    db_product_category = models.Products_class(产品类别1 = input_items.productCategory)
-    print(input_items)
+    db_product_category = models.Products_class(产品类别1 = input_items.产品类别1)
+    print(db_product_category)
     db.add(db_product_category)
     db.commit()
     db.refresh(db_product_category)
