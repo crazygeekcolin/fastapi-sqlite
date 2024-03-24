@@ -33,18 +33,19 @@ class Products(Base):
     产品名称 = Column(String)
     产品编号 = Column(String, index=True, unique=True)
     老编码 = Column(String)
-    产品类别 = Column(String, ForeignKey('products_class.产品类别1'))
+    #产品类别 = Column(String, ForeignKey('products_class.产品类别1'))
+    产品类别 = Column(String)
     
-    产品类别_子表 = relationship('Products_class', back_populates= '产品类别_母表')
+    #产品类别_子表 = relationship('Products_class', back_populates= '产品类别_母表')
     
     产品编号_母表 = relationship('ProductsCost', back_populates='产品编号_子表')
 
-class Products_class(Base):
+""" class Products_class(Base):
         __tablename__ = 'products_class'
         
         id = Column(Integer, primary_key=True, index=True)
         产品类别1 = Column(String, index=True)
-        产品类别_母表 = relationship('Products', back_populates= '产品类别_子表')
+        产品类别_母表 = relationship('Products', back_populates= '产品类别_子表') """
 
 class ProductsCost(Base):
     __tablename__ = 'productsCost'
@@ -91,22 +92,23 @@ class Payment(Base):
     id = Column(Integer, primary_key=True, index=True)
     日期 = Column(Date, server_default=func.now())
     金额 = Column(Numeric)
-    币种 = Column(String,ForeignKey('currency.currency'))
+    #币种 = Column(String,ForeignKey('currency.currency'))
+    币种 = Column(String)
     业务员 = Column(String, ForeignKey('users.name'))
     customer = Column(String, ForeignKey('customers.客户名'))
     是否预付款 = Column(Boolean)
     备注 =Column(String)
     
     customer_payments_child = relationship('Customer', back_populates='customer_payments_parent')
-    币种_子表 = relationship('Currency', back_populates='币种_母表')
+    #币种_子表 = relationship('Currency', back_populates='币种_母表')
     业务员_payment_child = relationship('User', back_populates= '业务员_payment_parent')
     
 
-class Currency(Base):
+""" class Currency(Base):
     __tablename__ = 'currency'
     
     id = Column(Integer, primary_key=True, index=True)
     currency = Column(String, unique=True, index=True)
     
-    币种_母表 = relationship('Payment', back_populates='币种_子表')
+    币种_母表 = relationship('Payment', back_populates='币种_子表') """
 

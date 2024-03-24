@@ -1,6 +1,7 @@
 from typing import List, Optional
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
+from enum import Enum
 
 
 class HomeWorkBase(BaseModel):
@@ -40,14 +41,28 @@ class User(UserBase):
         orm_mode = True """
         
         
-class ProductCategoryCreate(BaseModel):
+""" class ProductCategoryCreate(BaseModel):
     产品类别1: str | None = None
     #productCategory: str | None = None
 
 class ProductCategory(ProductCategoryCreate):
     model_config = ConfigDict(from_attributes= True)
+    id: int """
 
-    id: int
+class ProducCategory(str, Enum):
+    peptide = 'Peptide'
+    steroid = 'Steroids'
+    sarm = 'Sarm'
+    other = 'Others'
+
+class ProductsCreate(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    产品名称: str|None = Field(title = "填写产品名称", description=  '描述', default= None)
+    产品编号: str|None = Field(title='产品编号', description='Example:G008 可以空着', default= None)
+    老编码: str|None = Field(title='产品编号', description='粉末之前老编码 TE,TC 可以空着', default= None)
+    产品类别: ProducCategory| None = None
+    
 
 class Item(BaseModel):
     name: str

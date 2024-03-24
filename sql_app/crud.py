@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-
 from . import models, schemas
 from .helper import *
 
@@ -39,7 +38,7 @@ def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_i
 
     return db_home_work
 
-def create_product_category(db:Session, input_items:schemas.ProductCategoryCreate) :
+""" def create_product_category(db:Session, input_items:schemas.ProductCategoryCreate) :
 
     db_product_category = models.Products_class(产品类别1 = input_items.产品类别1)
     print(db_product_category)
@@ -47,4 +46,13 @@ def create_product_category(db:Session, input_items:schemas.ProductCategoryCreat
     db.commit()
     db.refresh(db_product_category)
     
-    return db_product_category
+    return db_product_category """
+
+def add_product(db: Session, products = schemas.ProductsCreate):
+    
+    db_product =models.Products(**products.model_dump())
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+    
+    return db_product

@@ -63,11 +63,15 @@ def read_home_works(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 
     return home_works
 
-@app.post('/product_class/', response_model=schemas.ProductCategory)
+""" @app.post('/product_class/', response_model=schemas.ProductCategory)
 def new_product_category(product_class:schemas.ProductCategoryCreate, db: Session = Depends(get_db)):
     print(schemas.ProductCategoryCreate)
-    return crud.create_product_category(input_items = product_class, db = db)
+    return crud.create_product_category(input_items = product_class, db = db) """
 
+@app.post('/products/', response_model=schemas.ProductsCreate)
+def new_product(product:schemas.ProductsCreate, db: Session = Depends(get_db)):
+    print(product)
+    return crud.add_product(products = product, db=db)
 
 @app.get("/items/{item_id}")
 def read_item(item_id: str, q: str | None = None, short: bool = False):
@@ -93,3 +97,4 @@ def creat_item(item:schemas.Item):
 @app.post('/items/{item_id}/')
 def add_itemID(item_id: int , items: schemas.Item):
     return {'item_id':item_id, **items.model_dump()}
+
