@@ -55,8 +55,8 @@ class ProductsCost(Base):
     产品编号 = Column(String, ForeignKey('products.产品编号'))
     产品规格 = Column(String)
     成本 = Column(Numeric)
-    #update = Column(DateTime, server_default=func.now())
-    update = Column(DateTime)
+    update = Column(DateTime, server_default=func.now())
+    #update = Column(DateTime)
     产品编号_子表 = relationship('Products', back_populates='产品编号_母表')
 
 class User(Base):
