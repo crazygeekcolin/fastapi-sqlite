@@ -3,8 +3,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime, timezone
 from enum import Enum
 
-def datetime_now() -> datetime:
-    return datetime.now(timezone.utc)
+def datetime_now():
+    return datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
 class HomeWorkBase(BaseModel):
     title: str
@@ -72,10 +72,10 @@ class ProductCostCreate(BaseModel):
     产品编号: str
     产品规格: str = Field(title='产品规格', description='格式小写不加vials 5mg')
     成本: float = Field(title='产品成本', description='格式：数字')
-
+    update: datetime = Field(default_factory = datetime_now)
+    
 class ProductCost(ProductCostCreate):
     id: int
-    update: datetime = Field(default_factory = datetime_now)
 
 class Item(BaseModel):
     name: str
