@@ -83,6 +83,7 @@ except ValidationError as e:
     
 print(datetime(2013,2,25))
 
+print(datetime(2013,2,25).date())
 
 #Default value in pydantic
 from datetime import datetime, timezone

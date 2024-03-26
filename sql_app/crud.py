@@ -48,11 +48,19 @@ def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_i
     
     return db_product_category """
 
-def add_product(db: Session, products = schemas.ProductsCreate):
+def add_product(db: Session, products = schemas.ProductsCreate, productCategory = schemas.ProducCategory):
     
-    db_product =models.Products(**products.model_dump())
+    db_product = models.Products(**products.model_dump(), 产品类别 = productCategory)
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
     
     return db_product
+
+def add_product_cost(db: Session, productsCost = schemas.ProductCostCreate):
+    db_product_cost = models.ProductsCost(**productsCost.model_dump())
+    db.add(db_product_cost)
+    db.commit()
+    db.refresh(db_product_cost)
+    
+    return db_product_cost

@@ -1,8 +1,10 @@
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
+def datetime_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 class HomeWorkBase(BaseModel):
     title: str
@@ -56,13 +58,24 @@ class ProducCategory(str, Enum):
     other = 'Others'
 
 class ProductsCreate(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
 
     产品名称: str|None = Field(title = "填写产品名称", description=  '描述', default= None)
     产品编号: str|None = Field(title='产品编号', description='Example:G008 可以空着', default= None)
-    老编码: str|None = Field(title='产品编号', description='粉末之前老编码 TE,TC 可以空着', default= None)
+    老编码: str|None = Field(title='老编号', description='粉末之前老编码 TE,TC 可以空着', default= None)
+    
+class Product(ProductsCreate):
+    id: int
     产品类别: ProducCategory| None = None
     
+    
+class ProductCostCreate(BaseModel):
+    产品编号: str
+    产品规格: str = Field(title='产品规格', description='格式小写不加vials 5mg')
+    成本: float = Field(title='产品成本', description='格式：数字')
+
+class ProductCost(ProductCostCreate):
+    id: int
+    update: datetime = Field(default_factory = datetime_now)
 
 class Item(BaseModel):
     name: str

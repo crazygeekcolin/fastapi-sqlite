@@ -68,10 +68,15 @@ def new_product_category(product_class:schemas.ProductCategoryCreate, db: Sessio
     print(schemas.ProductCategoryCreate)
     return crud.create_product_category(input_items = product_class, db = db) """
 
-@app.post('/products/', response_model=schemas.ProductsCreate)
-def new_product(product:schemas.ProductsCreate, db: Session = Depends(get_db)):
+@app.post('/products/', response_model=schemas.Product)
+def new_product(productCategory: schemas.ProducCategory ,product:schemas.ProductsCreate, db: Session = Depends(get_db)):
     print(product)
-    return crud.add_product(products = product, db=db)
+    return crud.add_product(products = product, productCategory = productCategory ,db=db)
+
+@app.post('/products_cost', response_model= schemas.ProductCost)
+def new_product_cost(product_cost: schemas.ProductCostCreate, db: Session =Depends(get_db)):
+    print(product_cost)
+    return crud.add_product_cost(productsCost=product_cost, db=db)
 
 @app.get("/items/{item_id}")
 def read_item(item_id: str, q: str | None = None, short: bool = False):

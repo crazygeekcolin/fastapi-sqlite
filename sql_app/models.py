@@ -51,11 +51,11 @@ class ProductsCost(Base):
     __tablename__ = 'productsCost'
     
     id = Column(Integer, primary_key=True, index=True)
-    产品名称 = Column(String)
+    #产品名称 = Column(String)
     产品编号 = Column(String, ForeignKey('products.产品编号'))
     产品规格 = Column(String)
-    成本 = Column(Integer)
-    update = Column(DateTime, server_default=func.now())
+    成本 = Column(Numeric)
+    update = Column(Date, server_default=func.now())
     产品编号_子表 = relationship('Products', back_populates='产品编号_母表')
 
 class User(Base):
