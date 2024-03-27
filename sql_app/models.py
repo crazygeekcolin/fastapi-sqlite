@@ -68,11 +68,11 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     
-
+    业务员_customer_parent = relationship('Customer', back_populates = '业务员_customer_child')
     salesperson_parent = relationship('Customer', back_populates='salesperson_child')
    # 业务员_order_parent:relationship('Curr')
     业务员_payment_parent = relationship('Payment', back_populates= '业务员_payment_child')
-
+    
 class Customer(Base):
     __tablename__ = 'customers'
     
@@ -113,3 +113,12 @@ class Payment(Base):
     
     币种_母表 = relationship('Payment', back_populates='币种_子表') """
 
+class Customer(Base):
+    __tablename__ = '客户'
+    
+    id = Column(Integer, primary_key=True, index=True)
+    业务员 = Column(String, ForeignKey('users.name'))
+    联系方式 = Column(String)
+    网站 = Column(String)
+    
+    业务员_customer_child = relationship('User', back_populates = '业务员_customer_parent')

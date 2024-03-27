@@ -18,7 +18,7 @@ print(a,b)
 
 
 print(b>a)
-
+print(datetime.now().date())
 
 class User(BaseModel):
     id: int
@@ -92,13 +92,13 @@ from uuid import UUID, uuid4
 from pydantic import BaseModel, Field
 
 
-def datetime_now() -> datetime:
-    return datetime.now(timezone.utc)
+def date_now() -> datetime:
+    return datetime.now(timezone.utc).date()
 
 
 class Model(BaseModel):
     uid: UUID = Field(default_factory=uuid4)
-    updated: datetime = Field(default_factory=datetime_now)
+    updated: datetime = Field(default_factory=date_now)
 
 
 m1 = Model()

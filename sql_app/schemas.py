@@ -1,8 +1,10 @@
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
+def date_now() -> datetime:
+    return datetime.now(timezone.utc).date()
 
 class HomeWorkBase(BaseModel):
     title: str
@@ -75,6 +77,14 @@ class ProductCostCreate(BaseModel):
 class ProductCost(ProductCostCreate):
     id: int
     update: datetime
+
+class CustomerCreate(BaseModel):
+    业务员: str
+    联系方式: str
+    网站: str
+    
+class Customer(CustomerCreate):
+    id: int
 
 class Item(BaseModel):
     name: str
