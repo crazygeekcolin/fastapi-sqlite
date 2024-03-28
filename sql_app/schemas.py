@@ -80,11 +80,23 @@ class ProductCost(ProductCostCreate):
 
 class CustomerCreate(BaseModel):
     业务员: str
+    客户名: str
     联系方式: str
     网站: str
     
 class Customer(CustomerCreate):
     id: int
+
+class Currency(str, Enum):
+
+class PaymentCreate(BaseModel):
+    日期
+    金额
+    #币种 = enum
+    业务员
+    customer
+    备注
+    
 
 class Item(BaseModel):
     name: str

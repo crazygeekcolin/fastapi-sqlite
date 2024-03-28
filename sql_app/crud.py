@@ -64,3 +64,12 @@ def add_product_cost(db: Session, productsCost = schemas.ProductCostCreate):
     db.refresh(db_product_cost)
     
     return db_product_cost
+
+def add_customer(db: Session, customer = schemas.CustomerCreate):
+    db_customer = models.Customer(**customer.model_dump())
+    db.add(db_customer)
+    db.commit()
+    db.refresh(db_customer)
+    
+    return db_customer
+    

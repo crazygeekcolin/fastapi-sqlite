@@ -73,10 +73,15 @@ def new_product(productCategory: schemas.ProducCategory ,product:schemas.Product
     print(product)
     return crud.add_product(products = product, productCategory = productCategory ,db=db)
 
-@app.post('/products_cost', response_model= schemas.ProductCost)
+@app.post('/products_cost/', response_model= schemas.ProductCost)
 def new_product_cost(product_cost: schemas.ProductCostCreate, db: Session =Depends(get_db)):
     print(product_cost)
     return crud.add_product_cost(productsCost=product_cost, db=db)
+
+@app.post('/customer/', response_model= schemas.Customer)
+def new_customer(customer: schemas.CustomerCreate, db:Session = Depends(get_db)):
+    print(customer)
+    return crud.add_customer(customer=customer, db=db)
 
 @app.get("/items/{item_id}")
 def read_item(item_id: str, q: str | None = None, short: bool = False):

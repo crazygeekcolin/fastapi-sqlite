@@ -68,7 +68,7 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     
-    业务员_customer_parent = relationship('Customer', back_populates = '业务员_customer_child')
+    #业务员_customer_parent = relationship('Customer', back_populates = '业务员_customer_child')
     salesperson_parent = relationship('Customer', back_populates='salesperson_child')
    # 业务员_order_parent:relationship('Curr')
     业务员_payment_parent = relationship('Payment', back_populates= '业务员_payment_child')
@@ -77,7 +77,7 @@ class Customer(Base):
     __tablename__ = 'customers'
     
     id = Column(Integer, primary_key=True, index=True)
-    salesperson = Column(String, ForeignKey('users.name'))
+    业务员 = Column(String, ForeignKey('users.name'))
     客户名 = Column(String, unique=True, index=True)
     联系方式 = Column(String)
     网站 = Column(String)
@@ -91,7 +91,7 @@ class Payment(Base):
     __tablename__ = '业务收款'
 
     id = Column(Integer, primary_key=True, index=True)
-    日期 = Column(Date, server_default=func.now())
+    日期 = Column(Date)
     金额 = Column(Numeric)
     #币种 = Column(String,ForeignKey('currency.currency'))
     币种 = Column(String)
@@ -113,7 +113,7 @@ class Payment(Base):
     
     币种_母表 = relationship('Payment', back_populates='币种_子表') """
 
-class Customer(Base):
+""" class Customer(Base):
     __tablename__ = '客户'
     
     id = Column(Integer, primary_key=True, index=True)
@@ -122,3 +122,4 @@ class Customer(Base):
     网站 = Column(String)
     
     业务员_customer_child = relationship('User', back_populates = '业务员_customer_parent')
+ """
