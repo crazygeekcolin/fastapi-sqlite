@@ -72,4 +72,11 @@ def add_customer(db: Session, customer = schemas.CustomerCreate):
     db.refresh(db_customer)
     
     return db_customer
+
+def add_payment(db: Session, currency = schemas.Currency, payment = schemas.PaymentCreate):
+    db_payment = models.Payment(币种 = currency, **payment.model_dump())
+    db.add(db_payment)
+    db.commit()
+    db.refresh(db_payment)
     
+    return db_payment

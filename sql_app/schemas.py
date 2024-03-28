@@ -1,6 +1,6 @@
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 from enum import Enum
 
 def date_now() -> datetime:
@@ -81,22 +81,32 @@ class ProductCost(ProductCostCreate):
 class CustomerCreate(BaseModel):
     业务员: str
     客户名: str
-    联系方式: str
-    网站: str
+    联系方式: str|None
+    网站: str|None
     
 class Customer(CustomerCreate):
     id: int
 
 class Currency(str, Enum):
-
-class PaymentCreate(BaseModel):
-    日期
-    金额
-    #币种 = enum
-    业务员
-    customer
-    备注
+    CNY = 'CNY 人民币'
+    USD = 'USD 美元'
+    HKD = 'HKD 港币'
+    EUR = 'EUR 欧元'
+    GBP = 'GBP 英镑'
+     
     
+class PaymentCreate(BaseModel):
+    日期: date = Field(title= '日期')
+    金额: int
+    #币种 = enum
+    业务员: str
+    customer: str
+    是否预付款: bool| None = Field(default= 0)
+    备注: str| None
+    
+class Payment(PaymentCreate):
+    id: int
+    币种: Currency
 
 class Item(BaseModel):
     name: str
