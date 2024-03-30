@@ -48,7 +48,7 @@ def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_i
     
     return db_product_category """
 
-def add_product(db: Session, products = schemas.ProductsCreate, productCategory = schemas.ProducCategory):
+def add_product(db: Session, products: schemas.ProductsCreate, productCategory: schemas.ProducCategory):
     
     db_product = models.Products(**products.model_dump(), 产品类别 = productCategory)
     db.add(db_product)
@@ -57,7 +57,7 @@ def add_product(db: Session, products = schemas.ProductsCreate, productCategory 
     
     return db_product
 
-def add_product_cost(db: Session, productsCost = schemas.ProductCostCreate):
+def add_product_cost(db: Session, productsCost: schemas.ProductCostCreate):
     db_product_cost = models.ProductsCost(**productsCost.model_dump())
     db.add(db_product_cost)
     db.commit()
@@ -65,7 +65,7 @@ def add_product_cost(db: Session, productsCost = schemas.ProductCostCreate):
     
     return db_product_cost
 
-def add_customer(db: Session, customer = schemas.CustomerCreate):
+def add_customer(db: Session, customer: schemas.CustomerCreate):
     db_customer = models.Customer(**customer.model_dump())
     db.add(db_customer)
     db.commit()
@@ -73,7 +73,7 @@ def add_customer(db: Session, customer = schemas.CustomerCreate):
     
     return db_customer
 
-def add_payment(db: Session, currency = schemas.Currency, payment = schemas.PaymentCreate):
+def add_payment(db: Session, currency: schemas.Currency, payment: schemas.PaymentCreate):
     db_payment = models.Payment(币种 = currency, **payment.model_dump())
     db.add(db_payment)
     db.commit()
