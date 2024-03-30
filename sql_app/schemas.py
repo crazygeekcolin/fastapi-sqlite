@@ -102,11 +102,44 @@ class PaymentCreate(BaseModel):
     业务员: str
     customer: str
     是否预付款: bool| None = Field(default= 0)
-    备注: str| None
+    备注: None|str = Field(default =None)
     
 class Payment(PaymentCreate):
     id: int
     币种: Currency
+    
+
+class Method(str, Enum):
+    美仓李帅直发 = '美仓李帅直发'
+    中国直发英国 = '中国直发英国'
+    中国直发德国= '中国直发德国'
+    中国直发UPS= '中国直发UPS'
+    
+
+class ShippingCreate(BaseModel):
+    日期: date = Field( default_factory=date_now)
+    业务员: str
+    收款说明: str
+    收款金额: str
+    #币种: str
+    #途径
+    单号: str
+    转单号: str
+    状态: str
+    收件人: str
+    国家:str
+    地址: str
+    电话: str
+    customer: str
+    明细备注: str
+    
+class Shipping(ShippingCreate):
+    id: int
+    币种: str
+    途径: Method
+
+class OrderCreate(BaseModel):
+    
 
 class Item(BaseModel):
     name: str

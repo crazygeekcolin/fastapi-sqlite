@@ -80,3 +80,11 @@ def add_payment(db: Session, currency: schemas.Currency, payment: schemas.Paymen
     db.refresh(db_payment)
     
     return db_payment
+
+def add_shipping(db:Session, method:schemas.Method, currency: schemas.Currency, shipping: schemas.ShippingCreate):
+    db_shipping = models.Shipping(途径 = method, 币种 = currency, **shipping.model_dump())
+    db.add(db_shipping)
+    db.commit()
+    db.refresh(db_shipping)
+    
+    return db_shipping

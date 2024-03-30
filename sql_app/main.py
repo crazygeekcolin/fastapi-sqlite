@@ -89,6 +89,10 @@ def new_payment(currency: schemas.Currency, payment: schemas.PaymentCreate, db: 
     print(currency)
     return crud.add_payment(currency= currency, payment= payment, db=db)
 
+@app.post('/shipping/', response_model=schemas.Shipping)
+def new_shipping(method:schemas.Method, currency: schemas.Currency, shipping: schemas.ShippingCreate, db: Session = Depends(get_db)):
+    print(method, currency,shipping)
+    return crud.add_shipping(method=method, currency=currency, shipping= shipping, db=db)
 
 @app.get("/items/{item_id}")
 def read_item(item_id: str, q: str | None = None, short: bool = False):
@@ -114,4 +118,5 @@ def creat_item(item:schemas.Item):
 @app.post('/items/{item_id}/')
 def add_itemID(item_id: int , items: schemas.Item):
     return {'item_id':item_id, **items.model_dump()}
+
 
