@@ -139,7 +139,7 @@ class Order(Base):
     __tablename__ = '订单'
     id = Column(Integer, primary_key=True, index=True)
     发货单ID = Column(Integer, ForeignKey('发货单.id'))
-    产品编号 = Column(String, ForeignKey('Products.产品编号'))
+    产品编号 = Column(String, ForeignKey('products.产品编号'))
     产品规格 = Column(String)
     产品数量 = Column(Integer)
     产品颜色 = Column(String)

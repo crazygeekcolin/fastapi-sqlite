@@ -88,3 +88,11 @@ def add_shipping(db:Session, method:schemas.Method, currency: schemas.Currency, 
     db.refresh(db_shipping)
     
     return db_shipping
+
+def add_order(db: Session, order: schemas.OrderCreate):
+    db_order = models.Order(**order.model_dump())
+    db.add(db_order)
+    db.commit()
+    db.refresh(db_order)
+    
+    return db_order

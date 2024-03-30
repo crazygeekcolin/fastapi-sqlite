@@ -117,7 +117,7 @@ class Method(str, Enum):
     
 
 class ShippingCreate(BaseModel):
-    日期: date = Field( default_factory=date_now)
+    日期: date = Field(default_factory=date_now)
     业务员: str
     收款说明: str
     收款金额: str
@@ -139,7 +139,16 @@ class Shipping(ShippingCreate):
     途径: Method
 
 class OrderCreate(BaseModel):
-    
+    发货单ID: int
+    产品编号: str
+    产品规格: str
+    产品数量: int
+    产品颜色: str
+    是否装盒: bool|None = Field(default= 1)
+    备注: str
+
+class Order(OrderCreate):
+    id: int
 
 class Item(BaseModel):
     name: str

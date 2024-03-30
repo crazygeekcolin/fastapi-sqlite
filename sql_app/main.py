@@ -94,6 +94,11 @@ def new_shipping(method:schemas.Method, currency: schemas.Currency, shipping: sc
     print(method, currency,shipping)
     return crud.add_shipping(method=method, currency=currency, shipping= shipping, db=db)
 
+@app.post('/order/',response_model= schemas.Order)
+def new_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+    return crud.add_order(order=order, db=db)
+
+
 @app.get("/items/{item_id}")
 def read_item(item_id: str, q: str | None = None, short: bool = False):
     item = {"item_id": item_id}
