@@ -51,6 +51,8 @@ def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_i
 def add_product(db: Session, products: schemas.ProductsCreate, productCategory: schemas.ProducCategory):
     
     db_product = models.Products(**products.model_dump(), 产品类别 = productCategory)
+    print(db_product)
+    print(products.model_dump())
     db.add(db_product)
     db.commit()
     db.refresh(db_product)

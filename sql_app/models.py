@@ -1,8 +1,9 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Date, Numeric
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+#from .database import Base #Used in FastAPI
 
-from .database import Base
+from database import Base #Used in normal python
 
 
 class User1(Base):
