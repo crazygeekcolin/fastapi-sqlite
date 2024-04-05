@@ -14,10 +14,6 @@ table_name = 'productsCost'
 db= SessionLocal()
 result = db.query(models.Shipping).offset(0).limit(100).all()
 
-for i in result:
-    print(i.__dict__)
-
-print('ok')
 
 df = pd.read_excel('../产品编号.xlsx', index_col=0)
 #df.rename(columns={'老编码(Steroids)':"老编码"})
@@ -25,22 +21,6 @@ df = pd.read_excel('../产品编号.xlsx', index_col=0)
 print(df.loc[2].to_json(force_ascii=False))
 a= df.loc[3].to_json(force_ascii=False)
 b=json.loads(a)
-
-
-results = db.query(models.Products).all()
-
-for i in results[:2]:
-    print(i.__dict__, type(i.__dict__))
-    ijson= i.__dict__.pop('_sa_instance_state')
-    print(i.__dict__)
-    json_string = json.dumps(i.__dict__)
-    i_js = json.loads(json_string)
-    print(i_js)
-    
-
-
-""" for i in range(len(df)):
-    if i.产品编号  """
 
 print(models.Products(**b))
 c= models.Products(**b)
@@ -51,4 +31,20 @@ db.refresh(c) """
 
 
 #db_product = models.Products()
+
+#results = db.query(models.Products).filter_by(产品名称 = 'bpc157').limit(3).all()
+#results: schemas.List[models.Products] = db.query(models.Products).filter(models.Products.产品名称 == 'bpc157').limit(3).all()
+results = db.query(models.Products).filter(models.Products.产品名称.like('%Bp')).limit(3).all()
+#results = db.query(models.User).limit(3).all()
+
+
+for i in results:
+    print(i.__dict__, type(i.__dict__))
+    i.__dict__.pop('_sa_instance_state')
+    i.__dict__.pop('hashed_password')
+    print(i.__dict__)
+    json_string = json.dumps(i.__dict__)
+    i_js = json.loads(json_string)
+    print(i_js)
+    
 
