@@ -25,6 +25,7 @@ for i in range(len(df)):
 result_list = []
 
 print(df.iloc[2].to_json(force_ascii=False))
+print(df.产品编号.unique(), len(df.产品编号.unique()))
 
 def add_db(row, primary_key_check = None):
     #Get the json format, need to convert later to sqlalchemy models
