@@ -130,7 +130,7 @@ def query_product(query: str, db:Session = Depends(get_db)):
     products = crud.query_product(db, text = query)
     return products
 
-@app.get('/products/', response_model=List[schemas.Product])
+@app.get('/products/', response_model=List[schemas.ProductQuery])
 def query_product1(skip:int =0, limit: int =100, db: Session = Depends(get_db)):
     result = crud.query_product1(skip=skip, limit=limit ,db=db)
     print(result)

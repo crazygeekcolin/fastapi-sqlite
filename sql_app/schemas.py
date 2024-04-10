@@ -51,6 +51,16 @@ class ProductCategory(ProductCategoryCreate):
     model_config = ConfigDict(from_attributes= True)
     id: int """
 
+class ProductCostCreate(BaseModel):
+    产品编号: str
+    产品规格: str = Field(title='产品规格', description='格式小写不加vials 5mg')
+    成本: float = Field(title='产品成本', description='格式：数字')
+    #update: datetime = Field(default_factory = datetime_now)
+    
+class ProductCost(ProductCostCreate):
+    id: int
+    update: datetime
+
 class ProductCategory(str, Enum):
     peptide = 'Peptide'
     steroid = 'Steroids'
@@ -66,17 +76,11 @@ class ProductsCreate(BaseModel):
 class Product(ProductsCreate):
     id: int
     产品类别: ProductCategory| None = None
+
+class ProductQuery(Product):
+    产品成本记录: List[ProductCost] = []
     
     
-class ProductCostCreate(BaseModel):
-    产品编号: str
-    产品规格: str = Field(title='产品规格', description='格式小写不加vials 5mg')
-    成本: float = Field(title='产品成本', description='格式：数字')
-    #update: datetime = Field(default_factory = datetime_now)
-    
-class ProductCost(ProductCostCreate):
-    id: int
-    update: datetime
 
 class CustomerCreate(BaseModel):
     业务员: str
