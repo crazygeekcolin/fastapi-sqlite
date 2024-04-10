@@ -51,7 +51,7 @@ class ProductCategory(ProductCategoryCreate):
     model_config = ConfigDict(from_attributes= True)
     id: int """
 
-class ProducCategory(str, Enum):
+class ProductCategory(str, Enum):
     peptide = 'Peptide'
     steroid = 'Steroids'
     sarm = 'Sarm'
@@ -65,7 +65,7 @@ class ProductsCreate(BaseModel):
     
 class Product(ProductsCreate):
     id: int
-    产品类别: ProducCategory| None = None
+    产品类别: ProductCategory| None = None
     
     
 class ProductCostCreate(BaseModel):

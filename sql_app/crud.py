@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 from . import models, schemas
 from .helper import *
 
@@ -48,7 +49,7 @@ def create_user_home_work(db: Session, home_work: schemas.HomeWorkCreate, user_i
     
     return db_product_category """
 
-def add_product(db: Session, products: schemas.ProductsCreate, productCategory: schemas.ProducCategory):
+def add_product(db: Session, products: schemas.ProductsCreate, productCategory: schemas.ProductCategory):
     
     db_product = models.Products(**products.model_dump(), 产品类别 = productCategory)
     print(db_product)
@@ -98,3 +99,18 @@ def add_order(db: Session, order: schemas.OrderCreate):
     db.refresh(db_order)
     
     return db_order
+
+
+def query_product(db: Session, text: str):
+    """ stmt = select(models.Products.产品编号
+              , models.Products.产品名称
+              , models.Products.产品类别
+              , #Products.产品成本记录).join(ProductsCost).filter(Products.产品名称 == 'Sermorelin\xa0(GRF1-29)')
+              models.Products.产品成本记录).join(models.ProductsCost)
+     """
+    stmt = select(models.Products).filter(models.Products.产品名称.like(f'%{text}%'))
+    return db.execute(stmt).all()
+
+def query_product1(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Products).offset(skip).limit(limit).all()
+

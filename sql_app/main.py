@@ -60,7 +60,7 @@ def create_home_work_for_user(user_id: int, home_work: schemas.HomeWorkCreate, d
 @app.get('/home-works/', response_model=List[schemas.HomeWork])
 def read_home_works(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     home_works = crud.get_home_works(db, skip=skip, limit=limit)
-
+    print(home_works)
     return home_works
 
 """ @app.post('/product_class/', response_model=schemas.ProductCategory)
@@ -68,12 +68,12 @@ def new_product_category(product_class:schemas.ProductCategoryCreate, db: Sessio
     print(schemas.ProductCategoryCreate)
     return crud.create_product_category(input_items = product_class, db = db) """
 
-@app.post('/products/', response_model=schemas.Product)
-def new_product(productCategory: schemas.ProducCategory ,product:schemas.ProductsCreate, db: Session = Depends(get_db)):
+@app.post('/products/', response_model=schemas.Product, tags= ['Product'])
+def new_product(productCategory: schemas.ProductCategory ,product:schemas.ProductsCreate, db: Session = Depends(get_db)):
     print(product)
     return crud.add_product(products = product, productCategory = productCategory ,db=db)
 
-@app.post('/products_cost/', response_model= schemas.ProductCost)
+@app.post('/products_cost/', response_model= schemas.ProductCost, tags= ['Product'])
 def new_product_cost(product_cost: schemas.ProductCostCreate , db: Session =Depends(get_db)):
     print(product_cost)
     return crud.add_product_cost(productsCost=product_cost, db=db)
@@ -125,3 +125,13 @@ def add_itemID(item_id: int , items: schemas.Item):
     return {'item_id':item_id, **items.model_dump()}
 
 
+@app.get('/products/{query}')
+def query_product(query: str, db:Session = Depends(get_db)):
+    products = crud.query_product(db, text = query)
+    return products
+
+@app.get('/products/', response_model=List[schemas.Product])
+def query_product1(skip:int =0, limit: int =100, db: Session = Depends(get_db)):
+    result = crud.query_product1(skip=skip, limit=limit ,db=db)
+    print(result)
+    return result
