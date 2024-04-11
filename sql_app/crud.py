@@ -114,3 +114,16 @@ def query_product(db: Session, text: str):
 def query_product1(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Products).offset(skip).limit(limit).all()
 
+def query_product_code(db:Session, text: str):
+    return db.query(models.Products).filter(models.Products.产品编号.like(f'%{text}%')).all()
+
+""" def query_products_cost(db: Session, skip:int = 0, limit: int = 100):# -> List[Row[Tuple[str, str, str, Any, Any, datetime]]]:
+    return db.query(models.Products.产品名称,
+                    models.ProductsCost.产品编号,
+                    models.ProductsCost.产品规格,
+                    models.ProductsCost.成本,
+                    models.ProductsCost.update
+                    ).offset(skip).limit(limit).all() """
+    
+def query_products_cost(db: Session, skip:int = 0, limit: int = 100):
+    return db.query(models.ProductsCost, models.Products.产品名称).offset(skip).limit(limit).all()

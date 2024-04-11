@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime, timezone, date
 from enum import Enum
 
-def date_now() -> datetime:
+def date_now() -> date:
     return datetime.now(timezone.utc).date()
 
 class HomeWorkBase(BaseModel):
@@ -60,6 +60,9 @@ class ProductCostCreate(BaseModel):
 class ProductCost(ProductCostCreate):
     id: int
     update: datetime
+    
+class ProductCostQuery(ProductCost):
+    产品名称: str|None
 
 class ProductCategory(str, Enum):
     peptide = 'Peptide'
@@ -80,7 +83,7 @@ class Product(ProductsCreate):
 class ProductQuery(Product):
     产品成本记录: List[ProductCost] = []
     
-    
+   
 
 class CustomerCreate(BaseModel):
     业务员: str

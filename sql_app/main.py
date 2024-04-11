@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, Tuple, Sequence
 
 from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.engine.row import Row
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
@@ -124,14 +125,24 @@ def creat_item(item:schemas.Item):
 def add_itemID(item_id: int , items: schemas.Item):
     return {'item_id':item_id, **items.model_dump()}
 
-
-@app.get('/products/{query}')
+#Get products by name
+@app.get('/products/name/{query}', response_model= List[Tuple[schemas.ProductQuery]], tags=['Product'])
 def query_product(query: str, db:Session = Depends(get_db)):
     products = crud.query_product(db, text = query)
     return products
 
-@app.get('/products/', response_model=List[schemas.ProductQuery])
+#Get all products
+@app.get('/products/', response_model=List[schemas.ProductQuery], tags=['Product'])
 def query_product1(skip:int =0, limit: int =100, db: Session = Depends(get_db)):
     result = crud.query_product1(skip=skip, limit=limit ,db=db)
-    print(result)
     return result
+
+#Get products by 产品编号
+@app.get('/products/code/{query}', response_model= List[schemas.ProductQuery], tags=['Product'])
+def query_product_code(text:str, db:Session = Depends(get_db)):
+    return crud.query_product_code(text= text, db=db)
+
+#Get products cost
+@app.get('/products_cost', response_model= List[schemas.ProductCost], tags= ['Product'])
+def query_products_cost(skip:int =0, limit: int =100, db: Session = Depends(get_db)):
+    return crud.query_products_cost(skip=skip, limit=limit, db=db)

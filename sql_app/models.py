@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Date, Numeric
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Date, Numeric, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .database import Base #Used in FastAPI
@@ -57,7 +57,7 @@ class ProductsCost(Base):
     #产品名称 = Column(String)
     产品编号 = Column(String, ForeignKey('products.产品编号'))
     产品规格 = Column(String)
-    成本 = Column(Numeric)
+    成本 = Column(Float)
     update = Column(DateTime, server_default=func.now())
     #update = Column(DateTime)
     产品编号_子表 = relationship('Products', back_populates='产品成本记录')
@@ -98,7 +98,7 @@ class Payment(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     日期 = Column(Date)
-    金额 = Column(Numeric)
+    金额 = Column(Float)
     #币种 = Column(String,ForeignKey('currency.currency'))
     币种 = Column(String)
     业务员 = Column(String, ForeignKey('users.name'))
