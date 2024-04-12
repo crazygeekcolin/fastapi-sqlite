@@ -42,14 +42,6 @@ class User(UserBase):
     """  class Config:
         orm_mode = True """
         
-        
-""" class ProductCategoryCreate(BaseModel):
-    产品类别1: str | None = None
-    #productCategory: str | None = None
-
-class ProductCategory(ProductCategoryCreate):
-    model_config = ConfigDict(from_attributes= True)
-    id: int """
 
 class ProductCostCreate(BaseModel):
     产品编号: str
@@ -61,8 +53,15 @@ class ProductCost(ProductCostCreate):
     id: int
     update: datetime
     
-class ProductCostQuery(ProductCost):
+class ProductCostQuery(BaseModel):
+    id: int
     产品名称: str|None
+    产品编号: str|None
+    产品规格: str
+    成本: float|None
+    update: datetime
+
+    
 
 class ProductCategory(str, Enum):
     peptide = 'Peptide'

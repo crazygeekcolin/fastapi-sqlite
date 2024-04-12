@@ -143,6 +143,12 @@ def query_product_code(text:str, db:Session = Depends(get_db)):
     return crud.query_product_code(text= text, db=db)
 
 #Get products cost
-@app.get('/products_cost', response_model= List[schemas.ProductCost], tags= ['Product'])
+@app.get('/products_cost/', response_model= List[schemas.ProductCostQuery], tags= ['Product'])
 def query_products_cost(skip:int =0, limit: int =100, db: Session = Depends(get_db)):
     return crud.query_products_cost(skip=skip, limit=limit, db=db)
+
+#Get products cost by name
+@app.get('/product_cost/name/{text}', response_model=List[schemas.ProductCostQuery], tags=['Product'])
+def query_products_cost_by_name(text: str, skip:int = 0, limit: int = 100, db: Session = Depends(get_db)):# -> List[Row[Tuple[str, str, str, Any, Any, datetime]]]:
+    return crud.query_products_cost_by_name(db = db, skip=skip, limit= limit, text = text)
+

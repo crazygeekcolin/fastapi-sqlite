@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Date, Numeric, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from .database import Base #Used in FastAPI
+from 。database import Base #Used in FastAPI
 
 #from database import Base #Used in normal python
 
@@ -105,11 +105,12 @@ class Payment(Base):
     customer = Column(String, ForeignKey('customers.客户名'))
     是否预付款 = Column(Boolean)
     备注 =Column(String)
+    发货单ID = Column(Integer, ForeignKey('发货单.id'))
     
     customer_payments_child = relationship('Customer', back_populates='付款记录')
     #币种_子表 = relationship('Currency', back_populates='币种_母表')
     业务员_payment_child = relationship('User', back_populates= '收款记录')
-    
+    发货单ID_payment_child = relationship('Shipping', back_populates= '收款记录')
     
 class Shipping(Base):
      __tablename__ = '发货单'
@@ -118,8 +119,8 @@ class Shipping(Base):
      日期 = Column(Date)
      业务员 = Column(String, ForeignKey('users.name'))
      收款说明 = Column(String)
-     收款金额 = Column(String)
-     币种 = Column(String)
+     收款金额 = Column(String) #主要收款金额
+     币种 = Column(String) #主要收款金额对应币种
      途径 = Column(String)
      备注 = Column(String)
      单号 = Column(String)
@@ -131,7 +132,8 @@ class Shipping(Base):
      电话 = Column(String)
      customer = Column(String, ForeignKey('customers.客户名'))
      明细备注 = Column(String)
-
+     
+     收款记录 = relationship('Payment', back_populates='发货单ID_payment_child' )
      业务员_shipping_child = relationship('User', back_populates= '发货单记录')
      customer_shipping_child = relationship('Customer', back_populates= '发货记录')
      产品 =  relationship('Order', back_populates='发货单ID_child')

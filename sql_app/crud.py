@@ -117,13 +117,26 @@ def query_product1(db: Session, skip: int = 0, limit: int = 100):
 def query_product_code(db:Session, text: str):
     return db.query(models.Products).filter(models.Products.产品编号.like(f'%{text}%')).all()
 
-""" def query_products_cost(db: Session, skip:int = 0, limit: int = 100):# -> List[Row[Tuple[str, str, str, Any, Any, datetime]]]:
-    return db.query(models.Products.产品名称,
+def query_products_cost(db: Session, skip:int = 0, limit: int = 100):# -> List[Row[Tuple[str, str, str, Any, Any, datetime]]]:
+    return db.query(models.ProductsCost.id,
+                    models.Products.产品名称,
                     models.ProductsCost.产品编号,
                     models.ProductsCost.产品规格,
                     models.ProductsCost.成本,
                     models.ProductsCost.update
-                    ).offset(skip).limit(limit).all() """
+                    ).join(models.Products).order_by(models.ProductsCost.id.desc()).offset(skip).limit(limit).all()
     
-def query_products_cost(db: Session, skip:int = 0, limit: int = 100):
-    return db.query(models.ProductsCost, models.Products.产品名称).offset(skip).limit(limit).all()
+    
+def query_products_cost_by_name(db: Session,text: str, skip:int = 0, limit: int = 100):# -> List[Row[Tuple[str, str, str, Any, Any, datetime]]]:
+    return db.query(models.ProductsCost.id,
+                    models.Products.产品名称,
+                    models.ProductsCost.产品编号,
+                    models.ProductsCost.产品规格,
+                    models.ProductsCost.成本,
+                    models.ProductsCost.update
+                    ).join(models.Products
+                           ).filter(models.Products.产品名称.like(f'%{text}%')
+                                    ).order_by(models.ProductsCost.id.desc()).offset(skip).limit(limit).all()
+                           
+def query_payments(db: Session, skip:int = 0, limit: int = 100):
+    return db.query(models.Payment).filter
