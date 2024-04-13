@@ -16,6 +16,9 @@ df.drop(columns='预付款/补款', inplace=True)
 #Covert the unix date to date
 #df['日期'] = df['日期'].dt.strftime('%Y-%m-%d')
 print(df['日期'].iloc[2])
+print(df['币种'].unique())
+df['币种'].replace({'USD Zelle':'USD 美元', 'CNY人民币':'CNY 人民币', 'USD': 'USD 美元', 'HKD港币': 'HKD 港币'}, inplace=True)
+print(df['币种'].unique())
 
 #Convert it to js
 def add_db(row, primary_key_check = None):
@@ -30,7 +33,7 @@ for i in range(len(df)):
     row = add_db(df.iloc[i])
     row['日期'] = datetime.fromisoformat(row['日期'])
     
-    print(type(row['日期']), row)
+    #print(type(row['日期']), row)
     if row:
         db_product_cost= models.Payment(**row)
         db.add(db_product_cost)
@@ -45,7 +48,7 @@ result= db.query(models.Customer.客户名).all()
 result_list = []
 for i in result:
     result_list.extend(i)
-print(result_list)
+#print(result_list)
 
 for i in range(len(df)):
     row = add_db(df.iloc[i])

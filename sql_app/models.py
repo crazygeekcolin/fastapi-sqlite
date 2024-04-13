@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Date, Numeric, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from 。database import Base #Used in FastAPI
+from .database import Base #Used in FastAPI
 
 #from database import Base #Used in normal python
 
@@ -116,7 +116,7 @@ class Shipping(Base):
      __tablename__ = '发货单'
      
      id = Column(Integer, primary_key=True, index=True)
-     日期 = Column(Date)
+     日期 = Column(Date) #不用手动加
      业务员 = Column(String, ForeignKey('users.name'))
      收款说明 = Column(String)
      收款金额 = Column(String) #主要收款金额

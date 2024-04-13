@@ -152,3 +152,22 @@ def query_products_cost(skip:int =0, limit: int =100, db: Session = Depends(get_
 def query_products_cost_by_name(text: str, skip:int = 0, limit: int = 100, db: Session = Depends(get_db)):# -> List[Row[Tuple[str, str, str, Any, Any, datetime]]]:
     return crud.query_products_cost_by_name(db = db, skip=skip, limit= limit, text = text)
 
+#Get latest payments
+@app.get('/payment/', response_model=List[schemas.Payment], tags= ['Payment'])
+def query_payments(skip: int = 0, limit: int = 100, db:Session = Depends(get_db)):
+    return crud.query_payments(skip= skip, limit= limit, db=db)
+
+#Get latest payments by customer
+@app.get('/payment/customer/{text}', response_model=List[schemas.Payment], tags=['Payment'])
+def query_payments_customer(text:str, skip:int = 0, limit:int =100, db:Session =Depends(get_db)):
+    return crud.query_payments_customer(db = db, text= text, skip= skip, limit= limit)
+
+#Get latest payments by sales name
+@app.get('/payment/sales/{text}', response_model=List[schemas.Payment], tags=['Payment'])
+def query_payments_sales(text:str, skip:int = 0, limit:int =100, db:Session =Depends(get_db)):
+    return crud.query_payments_sales(db = db, text= text, skip= skip, limit= limit)
+
+#Get customer by name
+@app.get('/customer/name/{text}', response_model=List[schemas.Customer], tags=['Customer'])
+def query_customer_names(text:str, db:Session =Depends(get_db)):
+    return crud.query_customer_name(db = db, text= text)

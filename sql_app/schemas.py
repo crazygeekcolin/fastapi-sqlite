@@ -105,8 +105,8 @@ class PaymentCreate(BaseModel):
     日期: date = Field(title= '日期')
     金额: int
     #币种 = enum
-    业务员: str
-    customer: str
+    业务员: str|None
+    customer: str|None
     是否预付款: bool| None = Field(default= 0)
     备注: None|str = Field(default =None)
     

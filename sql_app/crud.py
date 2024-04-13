@@ -139,4 +139,16 @@ def query_products_cost_by_name(db: Session,text: str, skip:int = 0, limit: int 
                                     ).order_by(models.ProductsCost.id.desc()).offset(skip).limit(limit).all()
                            
 def query_payments(db: Session, skip:int = 0, limit: int = 100):
-    return db.query(models.Payment).filter
+    return db.query(models.Payment).order_by(models.Payment.日期.desc()).offset(skip).limit(limit).all()
+
+def query_payments_customer(db:Session, text: str, skip:int =0, limit:int =100):
+    return db.query(models.Payment
+                    ).filter(models.Payment.customer.like(f'%{text}%')).order_by(models.Payment.日期.desc()).offset(skip).limit(limit).all()
+    
+def query_payments_sales(db:Session, text: str, skip:int =0, limit:int =100):
+    return db.query(models.Payment
+                    ).filter(models.Payment.业务员.like(f'%{text}%')).order_by(models.Payment.日期.desc()).offset(skip).limit(limit).all()
+    
+def query_customer_name(db:Session, text: str):
+    return db.query(models.Customer
+                    ).filter(models.Customer.客户名.like(f'%{text}%')).all()
