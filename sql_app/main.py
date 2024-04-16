@@ -1,11 +1,14 @@
-from typing import List, Tuple, Sequence
-
-from fastapi import Depends, FastAPI, HTTPException
+from typing import List, Tuple, Sequence, Annotated
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import Depends, FastAPI, HTTPException, status
 from sqlalchemy.engine.row import Row
 from sqlalchemy.orm import Session
 
-from . import crud, models, schemas
+
+from . import crud, models, schemas, helper
 from .database import SessionLocal, engine
+
+from pydantic import BaseModel
 
 #RunApp: uvicorn sql_app.main:app --reload
 
@@ -23,10 +26,93 @@ def get_db():
     finally:
         db.close()
 
+app = FastAPI()
+
+
+def fake_hash_password(password: str):
+    return "fakehashed" + password
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+class User(BaseModel):
+    username: str
+    email: str | None = None
+    full_name: str | None = None
+    disabled: bool | None = None
+
+
+class UserInDB(User):
+    hashed_password: str
+
+
+""" def get_user(db, username: str):
+    if username in db:
+        user_dict = db[username]
+        return UserInDB(**user_dict) """
+
+def get_user_new(username:str, db:Session = SessionLocal()):
+       user_list = []
+       for i in crud.get_users(db =db):
+           user_list.append(i.name)
+           if username in user_list:
+               #user: models.User | None = db.query(models.User).filter(models.User.name ==username).first()
+               user = crud.get_user_by_name(db=db, name= username)
+                #Make a copy so when query next time, the Python is working. If not will raise Error!
+               user_dict= user.__dict__.copy()
+               return user_dict
+
+
+def fake_decode_token(token):
+    # This doesn't provide any security at all
+    # Check the next version
+    user = get_user_new(username = token)
+    return user
+
+
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+    user = fake_decode_token(token)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return user
+
+
+async def get_current_active_user(
+    current_user: Annotated[models.User, Depends(get_current_user)],
+):
+    if current_user['is_active'] is False:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
+
+
+@app.post("/token")
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    user_dict = get_user_new(username=form_data.username)
+    if not user_dict:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    #Create a temporary User
+    user = models.User(name = user_dict['name'],hashed_password = user_dict['hashed_password'])
+    if not helper.verify_password(form_data.password, user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+    return {"access_token": user.name, "token_type": "bearer"}
+
+
+@app.get("/users/me")
+async def read_users_me(
+    current_user: Annotated[models.User, Depends(get_current_active_user)],
+):
+    return current_user
+
 
 @app.post('/users/', response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, name=user.name)
+    db_user = crud.get_user_by_name(db, name=user.name)
 
     if db_user:
         raise HTTPException(status_code=400, detail="Name already registered.")
@@ -64,11 +150,6 @@ def read_home_works(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     print(home_works)
     return home_works
 
-""" @app.post('/product_class/', response_model=schemas.ProductCategory)
-def new_product_category(product_class:schemas.ProductCategoryCreate, db: Session = Depends(get_db)):
-    print(schemas.ProductCategoryCreate)
-    return crud.create_product_category(input_items = product_class, db = db) """
-
 @app.post('/products/', response_model=schemas.Product, tags= ['Product'])
 def new_product(productCategory: schemas.ProductCategory ,product:schemas.ProductsCreate, db: Session = Depends(get_db)):
     print(product)
@@ -100,9 +181,9 @@ def new_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
     return crud.add_order(order=order, db=db)
 
 
-@app.get("/items/{item_id}")
+""" @app.get("/items/{item_id}")
 def read_item(item_id: str, q: str | None = None, short: bool = False):
-    item = {"item_id": item_id}
+    item: dict[str, str] = {"item_id": item_id}
     if q:
         item.update({"q": q})
     if not short:
@@ -123,7 +204,8 @@ def creat_item(item:schemas.Item):
 
 @app.post('/items/{item_id}/')
 def add_itemID(item_id: int , items: schemas.Item):
-    return {'item_id':item_id, **items.model_dump()}
+    return {'item_id':item_id, **items.model_dump()} """
+    
 
 #Get products by name
 @app.get('/products/name/{query}', response_model= List[Tuple[schemas.ProductQuery]], tags=['Product'])
